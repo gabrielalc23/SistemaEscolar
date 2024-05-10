@@ -1,0 +1,305 @@
+.logo{
+    position: absolute;
+    left: 2px;
+    height: 100px;
+    width: 120px;
+}
+
+.grid_960 ul {
+    padding-left: 90px; 
+}
+
+.nav-link {
+    margin-left: 30px;
+}
+
+h2{
+    font-family: Georgia, 'Times New Roman', Times, serif; 
+}
+
+h1{
+    font-family: Stencil Std, fantasy;
+    font-size: 6dvi;
+}
+
+p{
+    font-family: Gill Sans, sans-serif
+}
+
+.card-text{
+    font-family: Helvetica, sans-serif;
+}
+
+.images{
+    width: 50%;
+    height: 50%;
+}
+
+.nav-rodape{
+    background-color: black;
+    width: 100%;
+    height: 80%;
+    position: absolute; 
+}
+
+.menu {
+    width: 100%;
+    height: 80px;
+    background: #0c0c0c;
+    margin-top: 0%;
+}
+
+.menu li {
+    height: 80px;
+    text-transform: uppercase;
+    padding-left: 8px;
+    padding-right: 8px;
+    box-sizing: border-box;
+    float: left;
+    cursor: pointer;
+    position: relative;
+    -webkit-transition: all 200ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
+    -moz-transition: all 200ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
+    -o-transition: all 200ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
+    transition: all 200ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
+    -webkit-transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+    -moz-transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+    -o-transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+    transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+}
+
+.menu span {
+    font: 800 18px/18px"Gill Sans, sans-serif";
+    color: #f9f9fa;
+    line-height: 75px;
+}
+
+.menu li:hover {
+    background: #858383;
+}
+
+.menu li span:hover {
+    color: #474747;
+}
+
+.grande-titulo {
+  top: 100%;
+  font-size: 6em; 
+  color: black;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-align: center;
+
+}
+
+.grande-titulo2{
+    font-size: 5em; 
+    color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.grande-titulo3{
+    font-size: 5em; 
+    color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.grande-titulo3{
+  font-size: 5em; 
+  color: black;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.o-footer {
+    background-color: #000000;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 0;
+}
+
+.o-footer_help {
+    border-bottom: none;   
+    padding-bottom: 0;
+    padding-top: 0;
+}
+  
+.v-ctn {
+    max-width: 1196px;
+    margin: 0 auto;
+}
+  
+.o-footer_head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.o-footer_logo img {
+    max-width: 100px; 
+    height: auto;
+}
+
+.o-footer_logo {
+    display: flex;
+    width: 34%;
+    height: 100%;
+    align-items: center;
+}
+  
+.o-footer_link {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+  
+.o-footer_disclaimer {/**/
+    display: block;
+    width: 1196px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.625rem;
+    color: #fff;
+}
+
+.o-footer_foot {/**/
+    position: relative;
+    z-index: 2;
+    text-align: left;
+    padding-top: .9375rem;
+    padding-bottom: .9375rem;
+}
+
+.o-footer_sitemap {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+  
+.o-footer_list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.o-footer_link.-icon::after {
+    content: '\279C';
+    margin-left: 5px;
+}
+
+.o-footer_help > div {
+    padding-top: 0;
+}
+
+.a-label.-bottom {
+    margin-bottom: .3125rem;
+}
+
+.o-footer_contact {
+    padding-left: 0;
+}
+
+.o-footer_list {
+    list-style-type: none;
+    padding-left: 0;
+    padding-top: .75rem;
+}
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
+}
+ul {
+    list-style: none;
+}
+  
+.example-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.example-2 .icon-content {
+    margin: 0 10px;
+    position: relative;
+}
+
+.example-2 .icon-content .tooltip {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.example-2 .icon-content:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    top: -50px;
+}
+
+.example-2 .icon-content a {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #4d4d4d;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+.example-2 .icon-content a:hover {
+    box-shadow: 3px 2px 45px 0px rgb(0 0 0 / 12%);
+}
+
+.example-2 .icon-content a svg {
+    position: relative;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+}
+
+.example-2 .icon-content a:hover {
+    color: white;
+}
+
+.example-2 .icon-content a .filled {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: #000;
+    transition: all 0.3s ease-in-out;
+}
+
+.example-2 .icon-content a:hover .filled {
+    height: 100%;
+}
+
+.example-2 .icon-content a[data-social="instagram"] .filled,
+.example-2 .icon-content a[data-social="instagram"] ~ .tooltip {
+  background: linear-gradient(
+    45deg,
+    #405de6,
+    #5b51db,
+    #b33ab4,
+    #c135b4,
+    #e1306c,
+    #fd1f1f
+  );
+}
+
+.o-footer .acordeon_prev.-active::after {
+    transform: rotate(180deg);
+    margin-left: 10px;
+}
+
+

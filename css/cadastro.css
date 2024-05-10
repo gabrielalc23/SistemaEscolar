@@ -1,0 +1,110 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+form{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.form-group{
+    width: 100%;
+    margin-top:8px ;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #021813;
+}
+.caixa {
+    position: relative;
+    width: 25%;
+    height: auto;
+    color: wheat;
+    background: #0a4b3c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    padding: 30px;
+}
+.caixa::before, .caixa::after{
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: calc(100% + 30px);
+    height: calc(100% + 30px);
+    background: linear-gradient(45deg, #257e3f, #00ff00, #b9ad3d, #6cb885, #094212, #0f3509, #05631d,
+    #257e3f, #00ff00, #74e970, #a59f49, #17a01e);
+    background-size: 300%;
+    border-radius: 10px;
+    animation: animarBorda 8s linear alternate infinite;
+}
+
+@keyframes animarBorda{
+    0%{
+        background-position: 0;
+    }
+    100%{
+        background-position: 300%;
+    }
+}
+
+.caixa::after{
+    filter: blur(50px);
+}
+
+input:focus {
+    border-color: white;
+    border: 1px solid red;
+}
+.send {
+    margin-top: 20px;
+    appearance: none;
+    background-color: #247360;
+    border-radius: 4px;
+    border-width: 0;
+    box-shadow: rgba(211, 123, 8, 0.4) 0 2px 4px, rgba(228, 122, 60, 0.815) 0 7px 13px -3px,rgb(223, 146, 5) 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: wheat;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: "JetBrains Mono", monospace;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 18px;
+}
+
+.send:focus {
+    box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+.send:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, yellow 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
+
+.send:active {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(2px);
+}
