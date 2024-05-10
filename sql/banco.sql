@@ -1,49 +1,71 @@
 CREATE DATABASE cadastro
-	DEFAULT CHARACTER SET utf8
-	DEFAULT COLLATE utf8_general_ci;
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
 
 USE cadastro;
 
 CREATE TABLE usuarios (
-	id				INT NOT NULL AUTO_INCREMENT,
-    nome			VARCHAR(80) NOT NULL,
-    email			VARCHAR(60),
-    senha			VARCHAR(255) NOT NULL,
-    telefone		VARCHAR(16),
-	dataNasc		DATE,
-    especialidade	VARCHAR(100),
-    cpf				CHAR(11),
-    rg				CHAR(10),
-    perm			ENUM('adm','usr','prof'),
-    PRIMARY KEY (id,cpf,rg)
-)DEFAULT CHARSET = utf8;
+  id INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(80) NOT NULL,
+  email VARCHAR(60),
+  senha VARCHAR(255) NOT NULL,
+  telefone VARCHAR(15),
+  data_nascimento DATE,
+  especialidade VARCHAR(100),
+  cpf CHAR(11) NOT NULL,
+  rg CHAR(10) NOT NULL,
+  turma VARCHAR(50),
+  permission_level ENUM('adm', 'usr', 'prof') NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE INDEX idx_cpf (cpf),
+  UNIQUE INDEX idx_rg (rg)
+) DEFAULT CHARSET = utf8;
 
 
+CREATE TABLE busca (
+  ultima_busca VARCHAR(80)
+) DEFAULT CHARSET = utf8;
 
-CREATE TABLE busca(
-	ultBusca varchar(80)
-)default charset = utf8;
+CREATE TABLE fotos (
+  nome_original VARCHAR(100),
+  diretorio VARCHAR(100),
+  nome VARCHAR(100),
+  data_upload DATE,
+  PRIMARY KEY (diretorio)
+) DEFAULT CHARSET = utf8;
 
-CREATE TABLE fotos(
-    nomeOriginal 	VARCHAR(100),
-    diretorio		VARCHAR(100),
-    nome			VARCHAR(100),
-    dataUpload		DATE
-)DEFAULT CHARSET = utf8;
+CREATE TABLE cursos (
+  id INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(100) NOT NULL,
+  descricao_curta VARCHAR(1000) NOT NULL,
+  descricao VARCHAR(10000) NOT NULL,
+  duracao INT,
+  tipo VARCHAR(20),
+  preco INT,
+  data_inicio DATE,
+  idade_min INT,
+  pre_requisito VARCHAR(200),
+  foto VARCHAR(100),
+  PRIMARY KEY (id),
+  FOREIGN KEY (foto) REFERENCES fotos(diretorio)
+) DEFAULT CHARSET = utf8;
 
-CREATE TABLE cursos(
-	id 				INT NOT NULL AUTO_INCREMENT,
-	nome          	VARCHAR(100) NOT NULL,
-	descricaoCurta	VARCHAR(1000) NOT NULL,
-	descricao     	VARCHAR(10000) NOT NULL,
-	duracao       	INT,
-	tipo          	VARCHAR(20),
-	preco         	INT,
-	dataIni       	DATE,       
-	idadeMin      	INT,
-	preReq        	VARCHAR(200),
-	foto      		VARCHAR(100),
-    PRIMARY KEY(id),
-    FOREIGN KEY(foto) REFERENCES fotos(diretorio)
-)DEFAULT CHARSET = utf8;
+CREATE TABLE presenca (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  usuario_id INT NOT NULL,
+  data DATE NOT NULL,
+  presente TINYINT(1) NOT NULL DEFAULT 0,
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+CREATE TABLE notas (
+    id INT NOT NULL AUTO_INCREMENT,
+    id_aluno INT NOT NULL,
+    primeira_nota FLOAT NOT NULL,
+    segunda_nota FLOAT,
+    terceira_nota FLOAT,
+    quarta_nota FLOAT,
+    media FLOAT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_aluno) REFERENCES usuarios(id)
+);
 
