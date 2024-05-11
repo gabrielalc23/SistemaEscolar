@@ -14,9 +14,7 @@ CREATE TABLE usuarios (
   especialidade VARCHAR(100),
   cpf CHAR(11) NOT NULL,
   rg CHAR(10) NOT NULL,
-  turma_id INT,
   permission_level ENUM('adm', 'usr', 'prof') NOT NULL,
-  FOREIGN KEY (turma_id) REFERENCES turma(id) ,
   PRIMARY KEY (id),
   UNIQUE INDEX idx_cpf (cpf),
   UNIQUE INDEX idx_rg (rg)
@@ -55,7 +53,6 @@ CREATE TABLE cursos (
   foto VARCHAR(100),
   aluno VARCHAR(255),
   PRIMARY KEY (id),
-  FOREIGN KEY (aluno) REFERENCES usuarios(nome),
   FOREIGN KEY (foto) REFERENCES fotos(diretorio)
 ) DEFAULT CHARSET = utf8;
 
@@ -81,4 +78,3 @@ CREATE TABLE notas (
 INSERT INTO usuarios (nome, email, senha, cpf, rg, permission_level)
 VALUES ('admin', 'admin@example.com', '$2y$10$xdWelFBtuP5UpovmnyxwOuOatf/V0tTQOcTNkJdM0SqciUCFAKF6W', '12345678901', '1234567890', 'adm');
 
-drop database cadastro;

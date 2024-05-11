@@ -1,78 +1,58 @@
 <?php
-    include("./connection/connection.php");
-    include("./sessoes/sessaoAdm.php");
-    
+include("./connection/connection.php");
+include("./sessoes/sessaoAdm.php");
 
-    if (isset($_POST['enviar'])){
-        $nome           = $_POST['nome'];
-        $descricaoCurta = $_POST['descricaoCurta'];
-        $descricao      = $_POST['descricao'];
-        $duracao        = $_POST['duracao']??null;
-        $tipo           = $_POST['tipo'];
-        $preco          = $_POST['preco']??null;
-        $dataIni        = $_POST['dataIni']??null;
-        $idadeMin       = $_POST['idadeMin']??null;
-        $preReq         = $_POST['preReq']??null;
-        $foto           = $_FILES['foto'];
+if (isset($_POST['enviar'])) {
+    $nome = $_POST['nome'];
+    $descricaoCurta = $_POST['descricaoCurta'];
+    $descricao = $_POST['descricao'];
+    $duracao = $_POST['duracao'] ?? null;
+    $tipo = $_POST['tipo'];
+    $preco = $_POST['preco'] ?? null;
+    $dataIni = $_POST['dataIni'] ?? null;
+    $idadeMin = $_POST['idadeMin'] ?? null;
+    $preReq = $_POST['preReq'] ?? null;
+    $foto = $_FILES['foto'];
 
-        if($foto['error']){
-          die("falha ao enviar arquivo");
-        }
-        if($foto['size'] > 3145728){
-          die("arquivo grande demais!! max:3mb");
-        }
-
-        ?>
-        <?php
-     $pasta        = dirname(__DIR__) . '/fotos/'; 
-     $nomeOriginal = $foto['name']; 
-     $novoNome     = uniqid(); 
-     $extensao     = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION)); 
-     $nomeCompleto = $novoNome .'.'. $extensao; 
-     $dataAtual    = date('Y-m-d');
-     $diretorio    = $pasta.$nomeCompleto; 
-                     
-     if($extensao != 'png' && $extensao != 'jpg' && $extensao != 'jpeg'){
-         die("tipo de arquivo inválido"); 
-     }
-                     
-     $deuCerto = move_uploaded_file($foto['tmp_name'], $pasta . $nomeCompleto);
-     var_dump($deuCerto);
-     if (!$deuCerto){
-         die("erro ao salvar imagem");
-     }
-                        
-        $deuCerto = move_uploaded_file($foto['tmp_name'], $pasta . $nomeCompleto);
-        var_dump($deuCerto);
-        if (!$deuCerto){
-            die("erro ao salvar imagem");
-        }
-        
-        
-        $pesq = $conn ->prepare("INSERT INTO fotos(nome_original,diretorio,nome,data_upload)
-                                           VALUES (:nome_original,:diretorio,:nome,:data_upload)");
-        $pesq ->execute(array(
-          ':nome_original' => $nomeOriginal,
-          ':diretorio'    => $diretorio,
-          ':nome'         => $nomeCompleto,
-          ':data_upload'   => $dataAtual
-        ));
-
-        $sql = $conn->prepare("INSERT INTO cursos(nome,descricao_curta,descricao,duracao,tipo,preco,data_inicio,idade_min,pre_requisito,foto) 
-                                          VALUES (:nome,:descricao_curta,:descricao,:duracao,:tipo,:preco,:data_inicio,:idade_min,:pre_requisito,:foto)");
-        $sql -> execute(array(
-          ':nome'           => $nome,
-          ':descricao_curta' => $descricaoCurta,
-          ':descricao'      => $descricao,
-          ':duracao'        => $duracao,
-          ':tipo'           => $tipo,
-          ':preco'          => $preco,
-          ':data_inicio'        => $dataIni,
-          ':idade_min'       => $idadeMin,
-          ':pre_requisito'         => $preReq,
-          ':foto'           => $diretorio
-        ));
+    if ($foto['error']) {
+        die("falha ao enviar arquivo");
     }
+    if ($foto['size'] > 3145728) {
+        die("arquivo grande demais!! max:3mb");
+    }
+
+    string $pasta = dirname(__DIR__)  . './fotos';
+    $nomeOriginal = $foto['name'];
+    $novoNome = uniqid() . '.' . pathinfo($nomeOriginal, PATHINFO_EXTENSION);
+    $dataAtual = date('Y-m-d');
+    $diretorio = $pasta . $novoNome;
+
+    if ($foto['type'] !== 'image/jpeg' && $foto['type'] !== 'image/png') {
+        die("tipo de arquivo inválido");
+    }
+
+    if (!move_uploaded_file($foto['tmp_name'], $diretorio)) {
+        die("erro ao salvar imagem");
+    }
+
+    $pesq = $conn->prepare("INSERT INTO fotos(nome_original, diretorio, nome, data_upload) VALUES (?, ?, ?, ?)");
+    $pesq->execute([$nomeOriginal, $diretorio, $novoNome, $dataAtual]);
+
+    $sql = $conn->prepare("INSERT INTO cursos(nome, descricao_curta, descricao, duracao, tipo, preco, data_inicio, idade_min, pre_requisito, foto) 
+                                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $sql->execute([
+        $nome,
+        $descricaoCurta,
+        $descricao,
+        $duracao,
+        $tipo,
+        $preco,
+        $dataIni,
+        $idadeMin,
+        $preReq,
+        $diretorio
+    ]);
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -91,7 +71,7 @@
 <div class = "container">
     <div class = "row">
         <div class = "column">
-            <form action = "#" method = "post" enctype="multipart/form-data">
+            <form action = "" method = "post" enctype="multipart/form-data">
 
               <div class = "form-group">
                 <label for ="nome" >Nome</label>
@@ -153,22 +133,4 @@
                 <label for ="foto" >Foto ilustrativa do curso</label>
                 <input type = "file" class = "form-control" name = "foto" required>
               </div>
-
-
-
-              <div class = "form-group">
-                <button type="submit" class="btn btn-success" name = "enviar">enviar</button>
-              </div>
-              
-            </form>
-        </div>
-    </div>
-</div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
-</html>
-
-
-
-
 
