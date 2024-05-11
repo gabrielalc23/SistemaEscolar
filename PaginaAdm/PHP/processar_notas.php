@@ -15,9 +15,9 @@ include('../../Connection/connection.php');
 
 
 $primeira_nota = $_POST['primeira_nota'];
-$segunda_nota = $_POST['segunda_nota'];
+$segunda_nota  = $_POST['segunda_nota'];
 $terceira_nota = $_POST['terceira_nota'];
-$quarta_nota = $_POST['quarta_nota'];
+$quarta_nota   = $_POST['quarta_nota'];
 
 $media = ($primeira_nota + $segunda_nota + $terceira_nota + $quarta_nota) / 4;
 
@@ -35,9 +35,26 @@ $stmt->execute();
 
 echo '<div class="container">
 <div class="card mt-5">
-<div class="card-header">Média do aluno: ' . $_POST['nome'] . '</div>
-<div class="card-body"> Notas cadastradas com sucesso a média do ano inteiro é: ' . $media .
-    '</div>
+<div class="card-header bg-dark text-center text-white display-5">Notas do aluno: ' . $_POST['nome'] . '</div>
+<div class="card-body">
+<table class="table">
+
+<tr>
+    <th>Primeira nota</th>
+    <th>Segunda nota</th>
+    <th>Terceira nota</th>
+    <th>Quarta nota</th>
+    <th>Média das notas</th>
+</tr> 
+<tr>
+    <td>' . $primeira_nota.  '</td>
+    <td>' . $segunda_nota .  '</td>
+    <td>' . $terceira_nota . '</td>
+    <td>' . $quarta_nota .   '</td>
+    <td>' . $media .         '</td>
+</tr>
+</table> 
+</div>
 </div>
 </div>';
 ?>

@@ -32,14 +32,14 @@
         ));
         $sql = $sql->fetchAll(PDO::FETCH_ASSOC);
         foreach($sql as $item){
-          $_SESSION['id']         = $item['id'];
-          $_SESSION['nome']       = $item['nome'];
-          $_SESSION['email']      = $item['email'];
-          $_SESSION['perm']       = $item['perm'];
-          $_SESSION['cpf']        = $item['cpf'];
-          $_SESSION['rg']         = $item['rg'];
-          $_SESSION['telefone']   = $item['telefone'];
-          $_SESSION['data_nascimento']   = $item['data_nascimento'];
+          $_SESSION['id']               = $item['id'];
+          $_SESSION['nome']             = $item['nome'];
+          $_SESSION['email']            = $item['email'];
+          $_SESSION['permission_level'] = $item['permission_level'];
+          $_SESSION['cpf']              = $item['cpf'];
+          $_SESSION['rg']               = $item['rg'];
+          $_SESSION['telefone']         = $item['telefone'];
+          $_SESSION['data_nascimento']  = $item['data_nascimento'];
         }
         header("Location: {$_SERVER['PHP_SELF']}");
       }

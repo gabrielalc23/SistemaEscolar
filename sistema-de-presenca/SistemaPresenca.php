@@ -13,8 +13,6 @@
 <body class="bg-dark">
     <?php
     include('../../SistemaEscolar/connection/connection.php');
-    
-    // Check if form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         foreach ($_POST['presenca'] as $userId => $presenca) {
             $stmt = $conn->prepare("INSERT INTO presenca (usuario_id, data, presente) VALUES (:usuario_id, NOW(), :presente)");
@@ -29,7 +27,7 @@
         <a class="mt-5 btn btn-outline-info" href="../../SistemaEscolar/PaginaAdm/PHP/consultaTabela.php">Voltar para o Menu de Administração</a>
     </div>
     <?php
-    $sql = "SELECT * FROM usuarios WHERE nome <> 'administrador'";
+    $sql = "SELECT * FROM usuarios WHERE nome <> 'admin'";
     $stm = $conn->prepare($sql);
     $date = date('d/m/Y');
     ?>
@@ -63,8 +61,9 @@
                                 <h5><?= $aluno['nome'] ?></h5>
                             </td>
                             <td>
-                                <h5><?= $aluno['turma'] ?></h5>
+                                <h5><?= "Turminha de cria" ?></h5>
                             </td>
+                           
                             <td>
                                 <div class="form-check form-switch d-flex justify-content-center">
                                     <input type="hidden" name="presenca[<?= $aluno['id'] ?>]" value="0">
@@ -73,7 +72,8 @@
                                 </div>
                             </td>
                         </tr>
-                    <?php } ?>
+                    <?php }
+                 ?>
                 </table>
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Registrar Presença</button>

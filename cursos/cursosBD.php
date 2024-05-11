@@ -1,6 +1,6 @@
 <?php
-include("../connection/connection.php");
-include("../sessoes/sessao.php");
+include("../../SistemaEscolar/connection/connection.php");
+include("../../SistemaEscolar/sessoes/sessao.php");
 $search = false;
 
 $sql = $conn->prepare("SELECT id, nome, descricao_curta, descricao, duracao, tipo, preco, data_inicio, idade_min, pre_requisito, foto FROM cursos");

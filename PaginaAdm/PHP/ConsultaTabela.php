@@ -16,13 +16,15 @@
                 <th scope="col">EMAIL</th>
                 <th scope="col">TELEFONE</th>
                 <th scope="col">EDITAR</th>
+                <th scope="col">NÍVEL</th>
+                <th scope="col">EDITAR</th>
                 <th scope="col">DELETAR</th>
             </tr>
         </thead>
         <tbody>    
 <?php
 require_once('LayoutPadrao.php');
-include('../../Connection/connection.php');
+include('../../Connection/connectionveja.php');
 ?>
 <a class="btn btn-outline-info mb-3" href="../../pesquisa.php" >Retornar ao design anterior</a>
 
@@ -34,23 +36,26 @@ class User {
     private $email;
     private $telefone;
     private $senha;
+    private $permission;
 
-    public function __construct($id, $nome, $nascimento, $email, $telefone, $senha) {
+    public function __construct($id, $nome, $nascimento, $email, $telefone, $senha, $permission) {
         $this->id = $id;
         $this->nome = $nome;
         $this->nascimento = $nascimento;
         $this->email = $email;
         $this->telefone = $telefone;
         $this->senha = $senha;
+        $this->permission = $permission;
     }
 
     public function getFormEditar() {
         $html = '<form action="Editar.php" method="post">';
-        $html.= '<input type="hidden" name="id" value="'.         $this->id. '">';
-        $html.= '<input type="hidden" name="nome" value="'.       $this->nome. '">';
-        $html.= '<input type="hidden" name="nascimento" value="'. $this->nascimento. '">';
-        $html.= '<input type="hidden" name="email" value="'.      $this->email. '">';
-        $html.= '<input type="hidden" name="telefone" value="'.   $this->telefone. '">';
+        $html.= '<input type="hidden" name="id" value="'.               $this->id. '">';
+        $html.= '<input type="hidden" name="nome" value="'.             $this->nome. '">';
+        $html.= '<input type="hidden" name="nascimento" value="'.       $this->nascimento. '">';
+        $html.= '<input type="hidden" name="email" value="'.            $this->email. '">';
+        $html.= '<input type="hidden" name="telefone" value="'.         $this->telefone. '">';
+        $html.= '<input type="hidden" name="permission_level" value="'. $this->permission. '">';
         $html.= '<button type="submit" class="bg-warning rounded" name="editar" style="border: none; background-color: transparent;">';
         $html.= '<img style="cursor: pointer; border: none;" id="img-lapis" class="img-thumbnail bg-warning" src="../img/pencil.png" width="40">';
         $html.= '</button>';
@@ -67,20 +72,18 @@ class User {
         $html.= '</form>';
         return $html;
     }
+  
 }
 
-
-
-$sql = "SELECT id, nome, data_nascimento, email, telefone, senha FROM usuarios WHERE usuarios.nome <> 'administrador'";
+$sql = "SELECT id, nome, data_nascimento, email, telefone, senha, permission_level FROM usuarios WHERE nome <> 'admin'";
 
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
 foreach ($users as $user):
-    $userObject = new User($user["id"], $user["nome"], $user["data_nascimento"], $user["email"], $user["telefone"], $user["senha"]);
+    $userObject = new User($user["id"], $user["nome"], $user["data_nascimento"], $user["email"], $user["telefone"], $user["senha"], $user['permission_level']);
     echo '
             <tr>
                 <td>'. $user["id"]. '</td>
@@ -88,6 +91,8 @@ foreach ($users as $user):
                 <td>'. date('d/m/Y', strtotime($user['data_nascimento'])). '</td>
                 <td>'. $user["email"]. '</td>
                 <td>'. $user['telefone'] .'</td>
+                <td>'. $user['telefone'] .'</td>
+                <td>' .$user['permission_level']. '</td>
                 <td>'. $userObject->getFormEditar(). '</td>
                 <td>'. $userObject->getFormExcluir(). '</td>
             </tr>';

@@ -7,7 +7,7 @@ use Dompdf\Stylesheet;
 
 $bootstrapCss = file_get_contents('bootstrap.css');
 
-$sql = "SELECT * FROM usuarios WHERE usuarios.nome <> 'administrador'";
+$sql = "SELECT * FROM usuarios WHERE usuarios.nome <> 'admin'";
 $query = $conn->prepare($sql);
 $query->execute();
 

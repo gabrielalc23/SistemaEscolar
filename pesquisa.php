@@ -6,13 +6,13 @@
 
   
   if($busca == ''){
-    $sql = $conn->prepare("select id,nome,email,telefone,especialidade,data_nascimento,cpf,rg,perm from usuarios");
+    $sql = $conn->prepare("SELECT id,nome,email,telefone,data_nascimento,cpf,rg,permission_level FROM usuarios WHERE nome <> 'admin' ");
     $sql->execute();
     $todos = true;
   }
   
   else{
-    $sql = $conn->prepare("select id,nome,email,telefone,especialidade,data_nascimento,cpf,rg,perm from usuarios where nome like :busca");
+    $sql = $conn->prepare("SELECT id,nome,email,telefone,data_nascimento,cpf,rg,permission_level FROM usuarios WHERE nome LIKE :busca AND nome <> 'admin'");
     $sql->execute(array(
       ':busca' => $busca
     ));
@@ -26,14 +26,13 @@
 
     if($busca){
       echo'=========================================';
-      $sql = $conn->prepare("select id,nome,email,telefone,especialidade,data_nascimento,cpf,rg,perm from usuarios where nome like :busca");
+      $sql = $conn->prepare("SELECT id,nome,email,telefone,data_nascimento,cpf,rg,permission_level FROM usuarios WHERE nome LIKE :busca AND nome <> 'admin'");
       $sql->execute(array(
         ':busca' => $busca
       ));
     }
   }
  
-    
     $resulBusca = $sql->fetchAll(PDO::FETCH_ASSOC);
 
   if (isset($_POST['editar'])){
@@ -44,28 +43,27 @@
 
 
   if(isset($_POST['salvar'])){
-    $idEditar           = $_POST["salvar"];
-    $idAltNome          = $_POST[$idEditar."nome"];
-    $idAltEmail         = $_POST[$idEditar."email"];
-    $idAltTelefone      = $_POST[$idEditar."telefone"];
-    $idAltEspecialidade = $_POST[$idEditar."especialidade"];
-    $idAltdata_nascimento      = $_POST[$idEditar."data_nascimento"];
-    $idAltCpf           = $_POST[$idEditar."cpf"];
-    $idAltRg            = $_POST[$idEditar."rg"];
-    $idAltPerm          = $_POST[$idEditar."perm"];
+    $idEditar             = $_POST["salvar"];
+    $idAltNome            = $_POST[$idEditar."nome"];
+    $idAltEmail           = $_POST[$idEditar."email"];
+    $idAltTelefone        = $_POST[$idEditar."telefone"];
+    $idAltdata_nascimento = $_POST[$idEditar."data_nascimento"];
+    $idAltCpf             = $_POST[$idEditar."cpf"];
+    $idAltRg              = $_POST[$idEditar."rg"];
+    $idAltPerm            = $_POST[$idEditar."permission_level"];
 
-    $alt = $conn->prepare("UPDATE usuarios SET nome = :nome, email = :email, telefone = :telefone, especialidade = :especialidade, data_nascimento = :data_nascimento , cpf = :cpf, rg = :rg, perm = :perm  WHERE id = :idEditar;");
+    $alt = $conn->prepare("UPDATE usuarios SET nome = :nome, email = :email, telefone = :telefone, data_nascimento = :data_nascimento , cpf = :cpf, rg = :rg, permission_level = :permission_level  WHERE id = :idEditar;");
     $alt -> execute(array(
       ':idEditar'       => $idEditar,
       ':email'          => $idAltEmail,
       ':telefone'       => $idAltTelefone,
-      ':especialidade'  => $idAltEspecialidade,
       ':data_nascimento'       => $idAltdata_nascimento,
       ':nome'           => $idAltNome,
       ':cpf'            => $idAltCpf,
       ':rg'             => $idAltRg,
-      ':perm'           => $idAltPerm
+      ':permission_level'           => $idAltPerm
     ));
+
 
     $idEditar = null;
     header("Location: {$_SERVER['PHP_SELF']}");
@@ -87,7 +85,7 @@
 
 
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
   <meta charset="utf-8">
@@ -97,6 +95,7 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/style.css">
 
+  
   <!-- navbar -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
@@ -108,17 +107,17 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./telaInicial.php">Inicío</a>
+            <a class="nav-link active" aria-current="page" href="../../SistemaEscolar/telaInicial.php">Inicío</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./cursosBD.php">Cursos</a>
+            <a class="nav-link" href="../../SistemaEscolar/cursos/cursosBD.php">Cursos</a>
           </li>
 
 
           <?php
-          if(isset($_SESSION['perm'])){
+          if(isset($_SESSION['permission_level'])){
             
-            if($_SESSION['perm'] == 'adm'){
+            if($_SESSION['permission_level'] == 'adm'){
               echo'<li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Administrador
@@ -134,7 +133,7 @@
               </li>';
             }
             
-            elseif($_SESSION['perm'] == 'prof'){
+            elseif($_SESSION['permission_level'] == 'prof'){
               echo'<li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Professor
@@ -178,9 +177,7 @@
             <a class="nav-link" href="./quemSomos.php">Quem Somos?</a>
           </li>
           
-          <li class="nav-item">
-            <a class="nav-link" href="./termos.php">Termos de uso</a>
-          </li>
+          <
         </ul>
 
         <?php
@@ -199,8 +196,13 @@
   </nav>
 </head>
 
-
 <body>
+  <div class="form-group d-flex justify-content-end mt-4 gap-2 p-2">
+    <a href="telaInicial.php" class="btn btn-info">Tela inicial</a>
+      <a href = "../../SistemaEscolar/PaginaAdm">
+      <button type = "button" class = "btn btn-outline-dark">Pesquisa alternativa</button>
+    </a>
+  </div>
   <div class="container d-flex justify-content-center">
     <div class="row">
       <div class="column">
@@ -212,10 +214,7 @@
         </div>
         <table class="table table-hover">
         <thead class="">
-          <label class = "mt-1">
-            <a href = "../../SistemaEscolar/PaginaAdm">
-              <button type = "button" class = "btn btn-primary">Pesquisa alternativa</button>
-            </a>
+         
           <h1>Pesquisa</h1>
         </label>
             <tr class="">
@@ -223,7 +222,6 @@
               <th class = "tdTabela" scope="col">Nome</th>               
               <th class = "tdTabela" scope="col">Email</th>              
               <th class = "tdTabela" scope="col">Telefone</th>           
-              <th class = "tdTabela" scope="col">Especialidade</th>      
               <th class = "tdTabela" scope="col">Data de nascimento</th> 
               <th class = "tdTabela" scope="col">Cpf</th> 
               <th class = "tdTabela" scope="col">RG</th> 
@@ -237,26 +235,26 @@
 
                 if (!empty($resulBusca)) {
                   foreach ($resulBusca as $linha) {
-                    $id             = $linha['id'];
-                    $nome           = $linha['nome'];
-                    $email          = $linha['email'];
-                    $telefone       = $linha['telefone'];
-                    $especialidade  = $linha['especialidade'];
-                    $data_nascimento       = $linha['data_nascimento'];
-                    $cpf            = $linha['cpf'];
-                    $rg             = $linha['rg'];
-                    $perm           = $linha['perm'];
+
+                    $id              = $linha['id'];
+                    $nome            = $linha['nome'];
+                    $email           = $linha['email'];
+                    $telefone        = $linha['telefone'];
+                    $data_nascimento = $linha['data_nascimento'];
+                    $cpf             = $linha['cpf'];
+                    $rg              = $linha['rg'];
+                    $perm            = $linha['permission_level'];
+
                     if($idEditar == $id){
                       echo"<form method = \"post\" action = \"#\"><tr>
                           <th scope=\"row\">$id</th>
                           <td><input type = \"text\" id = \"inputt\" name = \"".$id."nome\" value = \"$nome\"></td>
                           <td><input type = \"text\" id = \"inputt\" name = \"".$id."email\" value = \"$email\"></td>
                           <td><input type = \"text\" id = \"inputt\" name = \"".$id."telefone\" value = \"$telefone\"></td>
-                          <td><input type = \"text\" id = \"inputt\" name = \"".$id."especialidade\" value = \"$especialidade\"></td>
                           <td><input type = \"text\" id = \"inputt\" name = \"".$id."data_nascimento\" value = \"$data_nascimento\"></td>
                           <td><input type = \"text\" id = \"inputt\" name = \"".$id."cpf\" value = \"$cpf\"></td>
                           <td><input type = \"text\" id = \"inputt\" name = \"".$id."rg\" value = \"$rg\"></td>
-                          <td><select id=\"inputt\" name=\"".$id."perm\" class = \"selectPerm\">
+                          <td><select id=\"inputt\" name=\"".$id."permission_level\" class = \"selectPerm\">
                           <option value=\"adm\">Administrador</option>
                           <option value=\"usr\">Usuário</option>
                           <option value=\"prof\">Professor</option>
@@ -270,7 +268,6 @@
                           <td class = \"tdTabela\">$nome</td>
                           <td class = \"tdTabela\">$email</td>
                           <td class = \"tdTabela\">$telefone</td>
-                          <td class = \"tdTabela\">$especialidade</td>
                           <td class = \"tdTabela\">$data_nascimento</td>
                           <td class = \"tdTabela\">$cpf</td>
                           <td class = \"tdTabela\">$rg</td>
@@ -285,9 +282,7 @@
             
           </tbody>
         </table>
-        <div class="form-group">
-          <a href="telaInicial.php" class="btn btn-primary">Tela inicial</a>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -295,11 +290,6 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
   <script src="./js/script.js"></script>
-
-  <?php
-    // exibirFooter();
-  ?>
-
 </body>
 
 </html>

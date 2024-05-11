@@ -3,7 +3,7 @@
     session_start();
  }
 
- $perm = $_SESSION['perm'] ?? '';
+ $perm = $_SESSION['permission_level'] ?? '';
 
  if ($perm != 'prof' || $perm != 'adm'){
     die('

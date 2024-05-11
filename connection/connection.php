@@ -28,9 +28,9 @@
     
     
         
-          if(isset($_SESSION['perm'])){
+          if(isset($_SESSION['permission_level'])){
 
-            if($_SESSION['perm'] == 'adm'){
+            if($_SESSION['permission_level'] == 'adm'){
               echo'<li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Administrador
@@ -46,7 +46,7 @@
             </li>';
             }
 
-            elseif($_SESSION['perm'] == 'prof'){
+            else if($_SESSION['permission_level'] == 'prof'){
               echo'<li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Professor
@@ -89,9 +89,7 @@
             <a class="nav-link" href="../../SistemaEscolar/quemSomos.php">Quem Somos?</a>
           </li>
           
-          <li class="nav-item">
-            <a class="nav-link" href="../../SistemaEscolar/Termos.php">Termos de uso</a>
-          </li>
+          
         </ul>
         ';
 

@@ -11,8 +11,10 @@
 <body>
     
 <div class="container mb-0">
+    
 <table class="table table-striped table-bordered table-hover">
     <thead class="thead-dark container">
+        
         <tr>
             <th scope="col">ID</th>
             <th scope="col">NOME</th>
@@ -47,7 +49,7 @@ class User
     }
 }
 
-$showStudent = "SELECT * FROM usuarios WHERE nome <> 'administrador'";
+$showStudent = "SELECT * FROM usuarios WHERE nome <> 'admin'";
 $stmt = $conn->prepare($showStudent);
 $stmt->execute();
 
@@ -59,7 +61,7 @@ foreach ($users as $user):
             <tr>
                 <td>' . $user["id"] . '</td>
                 <td>' . $user["nome"] . '</td>
-                <td>' . $user["data_nascimento"] . '</td>
+                <td>'. date('d/m/Y', strtotime($user['data_nascimento'])). '</td>
                 <td>' . $user["email"] . '</td>
                 <td>' . $user["telefone"] . '</td>
                 <td>

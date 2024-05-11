@@ -3,7 +3,6 @@ include('../../Connection/connection.php');
 
 $id_aluno = $_POST["idAluno"];
 
-var_dump($id_aluno);
 
 $sql_usuario = "SELECT * FROM usuarios WHERE id = :id_aluno";
 $stmt_usuario = $conn->prepare($sql_usuario);

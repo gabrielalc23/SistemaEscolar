@@ -1,6 +1,6 @@
 <?php
-    include("../connection/connection.php");
-    include("../sessoes/sessaoAdm.php");
+    include("./connection/connection.php");
+    include("./sessoes/sessaoAdm.php");
     
 
     if (isset($_POST['enviar'])){
@@ -22,45 +22,54 @@
           die("arquivo grande demais!! max:3mb");
         }
 
-        $pasta        = 'fotos/';
-        $nomeOriginal = $foto['name'];
-        $novoNome     = uniqid();
-        $extensao     = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
-        $nomeCompleto = $novoNome .'.'. $extensao;
-        $dataAtual    = date('Y-m-d');
-        $diretorio    = $pasta.$nomeCompleto;
-
-        if($extensao != 'png' && $extensao != 'jpg' && $extensao != 'jpeg'){
-          die("tipo de arquivo invalido");
-        }
-
-        $deuCerto = move_uploaded_file($foto['tmp_name'],$pasta . $nomeCompleto);
-
+        ?>
+        <?php
+     $pasta        = dirname(__DIR__) . '/fotos/'; 
+     $nomeOriginal = $foto['name']; 
+     $novoNome     = uniqid(); 
+     $extensao     = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION)); 
+     $nomeCompleto = $novoNome .'.'. $extensao; 
+     $dataAtual    = date('Y-m-d');
+     $diretorio    = $pasta.$nomeCompleto; 
+                     
+     if($extensao != 'png' && $extensao != 'jpg' && $extensao != 'jpeg'){
+         die("tipo de arquivo inválido"); 
+     }
+                     
+     $deuCerto = move_uploaded_file($foto['tmp_name'], $pasta . $nomeCompleto);
+     var_dump($deuCerto);
+     if (!$deuCerto){
+         die("erro ao salvar imagem");
+     }
+                        
+        $deuCerto = move_uploaded_file($foto['tmp_name'], $pasta . $nomeCompleto);
+        var_dump($deuCerto);
         if (!$deuCerto){
-          die("erro ao salvar imagem");
+            die("erro ao salvar imagem");
         }
         
-        $pesq = $conn ->prepare("INSERT INTO fotos(nomeOriginal,diretorio,nome,data_upload)
-                                           VALUES (:nomeOriginal,:diretorio,:nome,:data_upload)");
+        
+        $pesq = $conn ->prepare("INSERT INTO fotos(nome_original,diretorio,nome,data_upload)
+                                           VALUES (:nome_original,:diretorio,:nome,:data_upload)");
         $pesq ->execute(array(
-          ':nomeOriginal' => $nomeOriginal,
+          ':nome_original' => $nomeOriginal,
           ':diretorio'    => $diretorio,
           ':nome'         => $nomeCompleto,
           ':data_upload'   => $dataAtual
         ));
 
-        $sql = $conn->prepare("INSERT INTO cursos(nome,descricaoCurta,descricao,duracao,tipo,preco,dataIni,idadeMin,preReq,foto) 
-                                          VALUES (:nome,:descricaoCurta,:descricao,:duracao,:tipo,:preco,:dataIni,:idadeMin,:preReq,:foto)");
+        $sql = $conn->prepare("INSERT INTO cursos(nome,descricao_curta,descricao,duracao,tipo,preco,data_inicio,idade_min,pre_requisito,foto) 
+                                          VALUES (:nome,:descricao_curta,:descricao,:duracao,:tipo,:preco,:data_inicio,:idade_min,:pre_requisito,:foto)");
         $sql -> execute(array(
           ':nome'           => $nome,
-          ':descricaoCurta' => $descricaoCurta,
+          ':descricao_curta' => $descricaoCurta,
           ':descricao'      => $descricao,
           ':duracao'        => $duracao,
           ':tipo'           => $tipo,
           ':preco'          => $preco,
-          ':dataIni'        => $dataIni,
-          ':idadeMin'       => $idadeMin,
-          ':preReq'         => $preReq,
+          ':data_inicio'        => $dataIni,
+          ':idade_min'       => $idadeMin,
+          ':pre_requisito'         => $preReq,
           ':foto'           => $diretorio
         ));
     }
@@ -70,7 +79,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Projeto</title>
+    <title>Cadastrar um Curso</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"      rel="stylesheet" 
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- navbar -->
@@ -147,12 +156,8 @@
 
 
 
-              <div class = "form-group mt-4">
+              <div class = "form-group">
                 <button type="submit" class="btn btn-success" name = "enviar">enviar</button>
-              
-                <a href = "telaInicial.php" class = "btn btn-primary">tela inicial</a>
-
-                <a href = "login.php" class = "btn btn-primary">login</a>
               </div>
               
             </form>

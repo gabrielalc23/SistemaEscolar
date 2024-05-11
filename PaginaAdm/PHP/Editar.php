@@ -23,14 +23,16 @@ class User {
     private $email;
     private $telefone;
     private $senha;
+    private $permission;
 
-    public function __construct($id, $nome, $nascimento, $email, $telefone, $senha) {
+    public function __construct($id, $nome, $nascimento, $email, $telefone, $senha, $permission) {
         $this->id = $id;
         $this->nome = $nome;
         $this->nascimento = $nascimento;
         $this->email = $email;
         $this->telefone = $telefone;
         $this->senha = $senha;
+        $this->permission = $permission;
     }
 
     public function getFormEditar() {
@@ -39,53 +41,60 @@ class User {
         <div class="container">
             <h1>Editar Usuário</h1>
             <form action="Atualizar.php" method="POST">
-                <input type="hidden" name="id" value="'. $this->id. '">
+                <input type="hidden" name="id" value="' . $this->id . '">
                 <input type="hidden" name="redirect" value="ConsultaTabela.php">
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" class="form-control" id="nome" name="nome" value="'. $this->nome. '">
+                    <input type="text" class="form-control" id="nome" name="nome" value="' . $this->nome . '">
                 </div>
                 <div class="form-group">
                     <label for="nascimento">Nascimento</label>
-                    <input type="date" class="form-control" id="nascimento" name="nascimento" value="'. $this->nascimento. '">
+                    <input type="date" class="form-control" id="nascimento" name="nascimento" value="' . $this->nascimento . '">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="'. $this->email. '">
+                    <input type="email" class="form-control" id="email" name="email" value="' . $this->email . '">
                 </div>
                 <div class="form-group">
                     <label for="telefone">Telefone</label>
-                    <input type="number" class="form-control" id="telefone" name="telefone" value="'. $this->telefone. '">
+                    <input type="number" class="form-control" id="telefone" name="telefone" value="' . $this->telefone . '">
                 </div>
-                <button type="submit" class="btn btn-primary mt-4">Atualizar</button>            
-            </form>
+                <div class="form-group">
+                <label for="Permissões">Tipo de usuário</label>
+                    <select class="form-select form-select-sm mt-2" name="' . $this->permission . 'permission_level" class = "selectPerm">
+                        <option value="adm">Administrador</option>
+                        <option value="usr" selected>Usuário</option>
+                        <option value="prof">Professor</option>
+                    </select>
+                <button type="submit" class="btn btn-primary mt-4">Atualizar</button>    
+                </div>
+                </form>
         </div>';
         return $html;
-        if (isset($_POST['redirect'])) {
-            $redirect = $_POST['redirect'];
-            header('Location: '. $redirect);
-            exit;
-        }        
-        
     }
 }
 
 
 if (isset($_POST['id'])){
     $id = $_POST['id'];
-    $sql = "SELECT id, nome, data_nascimento, email, telefone, senha FROM usuarios WHERE id =?";
+    $sql = "SELECT id, nome, data_nascimento, email, telefone, senha, permission_level FROM usuarios WHERE id =?";
     $stmt = $conn->prepare($sql);
     $stmt->bindValue(1, $id);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
-if ($user):
-        $userObject = new User($user["id"], $user["nome"], $user["data_nascimento"], $user["email"], $user["telefone"], $user["senha"]);
+    if ($user):
+        $userObject = new User($user["id"], $user["nome"], $user["data_nascimento"], $user["email"], $user["telefone"], $user["senha"], $user['permission_level']);
         echo $userObject->getFormEditar();
 
-endif;
+        if (isset($_POST['redirect'])) {
+            $redirect = 'http://' . $_POST['redirect'];
+            header('Location: ' . $redirect);
+            exit;
+        }
+    endif;
 }
-  
+
 ?>
 
 </body>
